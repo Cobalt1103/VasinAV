@@ -1,0 +1,66 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <locale.h>
+
+void main()
+{
+	setlocale(0, "");
+	double min;
+	double max;
+	int minor;   // Размер множества
+	int i;       // Номер элемента
+	double* Massive; 
+	double sum = 0;
+	double cel;
+	double drob;
+	printf("Введите количество генерируемых чисел:\n");
+	scanf("%d", &minor);
+	if (minor <= 0) 
+	{
+		printf("Произошла непредвиденная ошибка. Пожалуйста, повторите попытку ввода.\n");
+		goto stop;
+	}
+	printf("Введите минимальную границу диапазона генерации:\n");
+	scanf("%lf", &min);
+	printf("Введите максимальную границу диапазона генерации:\n");
+	scanf("%lf", &max);
+	if (min > max) 
+	{
+		printf("Произошла непредвиденная ошибка.Пожалуйста, повторите попытку ввода.\n");
+		goto stop;
+	}
+	Massive = (double*)malloc(minor * sizeof(double));// Динамический массив
+	if (Massive == 0)
+	{
+		printf("Произошла непредвиденная ошибка, массив не удалось создать. Завершение работы.\n");
+		goto stop;
+	}
+	for (i = 0; i < minor; i++)
+	{
+		Massive[i] = 0;
+	}
+	for (i = 0; i < minor; i++)
+	{
+		Massive[i] = (((double)rand()) / RAND_MAX) * (max - min) + min;     // Генератор действительных чисел в диапазоне от min до max
+	}
+	for (i = 0; i < minor; i++) 
+	{
+		drob = modf(Massive[i], &cel);
+		drob = drob * 1000000;
+		if (drob < minor+1)
+		{
+			sum = sum - Massive[i];
+		}
+		else
+		{
+			sum = sum + Massive[i];
+		}
+	}
+	printf("Искомая сумма: %lf\n", sum);
+	free(Massive);
+	stop:
+	system("pause");  
+	
+}
